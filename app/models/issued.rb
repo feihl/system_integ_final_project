@@ -1,0 +1,2 @@
+class Issued < ApplicationRecord
+end

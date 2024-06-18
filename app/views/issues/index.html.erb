@@ -1,0 +1,159 @@
+    <div class="row row-offcanvas row-offcanvas-left">   
+		        <div class="col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
+<ul class="nav flex-column pl-1 leftMenus">			
+<li class="nav-item"><a class="nav-link" href="/dashboard"><strong><h1>Dashboard</h1></strong></a></li>
+<li class="nav-item">
+	<ul class="list-unstyled flex-column pl-3 collapse show" id="submenu1" aria-expanded="false">
+		<li class="nav-item"><a class="nav-link" href="/book"><strong>Manage Books</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/category"><strong>Category</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/author"><strong>Author</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/publisher"><strong>Publisher</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/rack"><strong>Rack</strong></a></li>	
+	</ul>
+</li>
+<li class="nav-item"><a class="nav-link" href="/issues"><strong>Issue Books</strong></a></li>
+<li class="nav-item"><a class="nav-link" href="/users"><strong>Student List</strong></a></li>
+<li class="nav-item"><a class="nav-link" href="/admin"><strong>Admin</strong></a></li>
+<li class="nav-item"><a class="nav-link" href=""><strong>Logout</strong></a></li>
+</ul>
+</div>
+     <div class="col-md-9 col-lg-10 main col-md-2"> 
+		<h3>Issued Book</h3>
+			<br>
+			<div class="float-right mb-2 col-md-2">
+				<button type="button" id="issueBook" class="btn btn-info" title="Add book"><span class="glyphicon glyphicon-plus">Issue Book</span></button>
+			</div>
+			<br><br>	
+			<table class="table table-striped">
+			<thead>
+			  <tr>		
+				<th>Book</th>
+				<th>ISBN</th>
+				<th>User</th>	
+				<th>Issue Date</th>	
+				<th>Expected Return</th>	
+				<th>Return Date</th>											
+				<th>Status</th>													
+				<th>action</th>
+				<th></th>		
+			  </tr>
+			</thead>
+				<tbody>
+				<% @suazo.each do |issue| %>
+					<tr>
+					<% book = ManBook.find_by(id: issue.bookid) %>
+					<% user = User.find_by(id: issue.userid) %>
+
+					<td><%= book.name if book.present? %></td>
+					<td><%= book.isbn if book.present? %></td>
+					<td><%= "#{user.first_name} #{user.middle_name} #{user.last_name}" if user.present? %></td>
+					<td><%= issue.issue_date_time %></td>
+					<td><%= issue.expected_date_time %></td>
+					<td><%= issue.return_date_time %></td>
+					<td style="<%= 'background-color: orange; color: white;' if issue.return_date_time.nil? && (Time.now - issue.expected_date_time) > 0 %>
+								<%= 'background-color: yellow; color: white;' if issue.return_date_time.nil? && (Time.now - issue.expected_date_time) <= 0 %>
+								<%= 'background-color: green; color: white;' if issue.return_date_time.present? %>">
+					<% if issue.return_date_time.nil? %>
+						<% if (Time.now - issue.expected_date_time) > 0 %>
+						<%= "Overdue" %>
+						<% else %>
+						<%= "Not Returned" %>
+						<% end %>
+					<% else %>
+						<%= "Returned" %>
+					<% end %> 
+					</td>
+					</td>
+					<td>
+						<a href="/issues/<%= issue.id %>/edit" class="btn btn-primary">Edit</a>
+						<a href="/issues/<%= issue.id %>/destroy" class="btn btn-danger">Delete</a>
+					</td>
+					</tr>
+				<% end %>
+				</tbody>
+		  </table>	        
+        <hr>         
+       </div>       
+      </div>     
+    </div>
+
+	<div id="issuedBookModal" class="modal fade">
+		<div class="modal-dialog">
+			<form method="post" id="issuedBookForm" action="/issues/create">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"></button>
+						<h4 class="modal-title"><i class="fa fa-plus"></i> Edit issued book</h4>
+					</div>
+					<div class="modal-body">								
+						<div class="form-group">							
+							<label for="rack" class="control-label">Available Books</label>
+							<select name="book" id="book" class="form-control">
+								<option value="">Select</option>
+								<% @books.each do |book| %>
+									<% if book.status == 'Available' %>
+										<option value="<%= book.id %>"><%= book.name %></option>
+									<% end %>
+								<% end %>
+							</select>
+						</div>	
+						
+						<div class="form-group">							
+							<label for="rack" class="control-label">User</label>
+							<select name="users" id="users" class="form-control">
+								<option value="">Select</option>
+								<% @users.each do |user| %>
+							        <option value="<%= user.id %>"><%= user.first_name %> <%= user.middle_name %> <%= user.last_name %></option>
+                                 <% end %>
+							</select>
+						</div>	
+						
+						<div class="form-group">							
+							<label for="expected date" class="control-label">Issue Date</label>
+							<input type="datetime-local" step="1" name="issue_date" id="issue_date" autocomplete="off" class="form-control"/>								
+						</div>
+						
+						<div class="form-group">							
+							<label for="expected date" class="control-label">Expected Return Date</label>
+							<input type="datetime-local" step="1" name="expected_return_date" id="expected_return_date" autocomplete="off" class="form-control"/>								
+						</div>
+						
+						
+						<div class="form-group">							
+							<label for="expected date" class="control-label">Return Date</label>
+							<input type="datetime-local" step="1" name="return_date" id="return_date" autocomplete="off" class="form-control"/>								
+						</div>
+						
+						
+						<div class="form-group">
+							<label for="status" class="control-label">Status</label>			
+							<select class="form-control" id="status" name="status">
+								<option value="">Select</option>							
+								<option value="Issued">Issued</option>
+								<option value="Returned">Returned</option>
+								<option value="Not Return">Not Return</option>										
+							</select>							
+						</div>				
+						
+										
+					</div>
+					<div class="modal-footer">
+						<input type="hidden" name="issuebookid" id="issuebookid" />					
+						<input type="hidden" name="action" id="action" value="addIssueBook" />
+						<input type="submit" name="save" id="save" class="btn btn-info" value="Save" />
+						<button type="button" class="btn btn-default" data-dismiss="modal" id="closeModal">Close</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+    <script>
+    $(document).ready(function () {
+        $("#issueBook").click(function () {
+            $("#issuedBookModal").modal("show");
+        });
+        $("#closeModal").click(function () {
+            $("#issuedBookModal").modal("hide");
+        });
+    });
+</script>

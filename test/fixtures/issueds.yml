@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bookid: 1
+  userid: 1
+  issue_date: 2023-11-17
+  expected_return: 2023-11-17
+  status: MyString
+
+two:
+  bookid: 1
+  userid: 1
+  issue_date: 2023-11-17
+  expected_return: 2023-11-17
+  status: MyString

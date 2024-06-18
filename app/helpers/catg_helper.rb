@@ -1,0 +1,2 @@
+module CatgHelper
+end

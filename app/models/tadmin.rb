@@ -1,0 +1,2 @@
+class Tadmin < ApplicationRecord
+end

@@ -1,0 +1,178 @@
+    <div class="row row-offcanvas row-offcanvas-left">   
+		        <div class="col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
+<ul class="nav flex-column pl-1 leftMenus">			
+<li class="nav-item"><a class="nav-link" href="/dashboard"><strong><h1>Dashboard</h1></strong></a></li>
+<li class="nav-item">
+	<ul class="list-unstyled flex-column pl-3 collapse show" id="submenu1" aria-expanded="false">
+		<li class="nav-item"><a class="nav-link" href="/book"><strong>Manage Books</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/category"><strong>Category</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/author"><strong>Author</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/publisher"><strong>Publisher</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/rack"><strong>Rack</strong></a></li>	
+	</ul>
+</li>
+<li class="nav-item"><a class="nav-link" href="/issues"><strong>Issue Books</strong></a></li>
+<li class="nav-item"><a class="nav-link" href="/users"><strong>Student List</strong></a></li>
+<li class="nav-item"><a class="nav-link" href="/admin"><strong>Admin</strong></a></li>
+<li class="nav-item"><a class="nav-link" href=""><strong>Logout</strong></a></li>
+</ul>
+</div>
+      <div class="col-md-9 col-lg-10 main"> 
+		<h3>Book List</h3>
+			<br>
+			<div class="float-right mb-2 col-md-2">
+				<button type="button" id="addBook" class="btn btn-info" title="Add book"><span class="glyphicon glyphicon-plus">Add Book</span></button>
+			</div>
+			<br><br>			
+				<table class="table table-striped">
+				<thead>
+					<tr>
+					<th>Book</th>
+					<th>ISBN</th>
+					<th>Author</th>
+					<th>Publisher</th>
+					<th>Category</th>
+					<th>Rack</th>
+					<th>No of copy</th>
+					<th>Status</th>
+					<th>Actions</th>
+					<th></th>
+					</tr>
+				</thead>
+				<tbody>
+<tbody>
+  <% @books.each do |book| %>
+    <tr>
+      <td><%= book.name %></td>
+      <td><%= book.isbn %></td>
+
+      <% author = Author.find_by(id: book.authorid) %>
+      <td><%= author.name if author.present? %></td>
+
+      <% publisher = Publisher.find_by(id: book.publisherid) %>
+      <td><%= publisher.name if publisher.present? %></td>
+
+      <% category = Catg.find_by(id: book.categoryid) %>
+      <td><%= category.name if category.present? %></td>
+
+      <% rack = Cabrack.find_by(id: book.rackid) %>
+      <td><%= rack.name if rack.present? %></td>
+	  
+	  <td><%= book.no_of_copy %></td>
+	  <td><%= book.status %></td>
+      <td>
+        <a href="/book/<%= book.id %>/edit" class="btn btn-primary">Edit</a>
+        <a href="/book/<%= book.id %>/destroy" class="btn btn-danger">Delete</a>
+      </td>
+    </tr>
+  <% end %>
+</tbody>
+		  </table>	        
+        <hr>         
+       </div>       
+      </div>     
+    </div>
+
+	<div id="bookModal" class="modal fade">
+		<div class="modal-dialog">
+			<form method="post" id="bookForm" action="/book/create">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"></button>
+						<h4 class="modal-title"><i class="fa fa-plus"></i> Edit book</h4>
+					</div>
+					<div class="modal-body">						
+						
+						<div class="form-group">							
+							<label for="book" class="control-label">Book</label>							
+							<input type="text" name="name" id="name" autocomplete="off" class="form-control" placeholder="book name"/>
+											
+						</div>
+						
+						<div class="form-group">							
+							<label for="book" class="control-label">ISBN No</label>							
+							<input type="number" name="isbn" id="isbn" autocomplete="off" class="form-control" placeholder="isbn number"/>
+											
+						</div>
+						
+						<div class="form-group">							
+							<label for="book" class="control-label">No of copy</label>			
+							<input type="number" name="no_of_copy" id="no_of_copy" autocomplete="off" class="form-control" placeholder="No of copy"/>
+						</div>
+						
+						<div class="form-group">							
+							<label for="author" class="control-label">Author</label>
+							<select name="author" id="author" class="form-control">
+								<option value="">Select</option>
+								<% @authors.each do |author| %>
+							        <option value="<%= author.id %>"><%= author.name %></option>
+                                 <% end %>
+							</select>
+						</div>
+						
+						<div class="form-group">							
+							<label for="publisher" class="control-label">Publisher</label>
+							<select name="publisher" id="publisher" class="form-control">
+								<option value="">Select</option>
+                                <% @publishers.each do |publisher| %>
+									<option value="<%= publisher.id %>"><%= publisher.name %></option>
+                                <% end %>							
+							</select>
+						</div>
+
+						<div class="form-group">							
+							<label for="category" class="control-label">Category</label>
+							<select name="category" id="category" class="form-control">
+								<option value="">Select</option>
+                                <% @categories.each do |category| %>
+									<option value="<%= category.id %>"><%= category.name %></option>
+                                <% end %>								
+							</select>
+						</div>								
+					
+						<div class="form-group">							
+							<label for="rack" class="control-label">Rack</label>
+							<select name="rack" id="rack" class="form-control">
+								<option value="">Select</option>
+                                <% @racks.each do |rack| %>
+									<option value="<%= rack.id %>"><%= rack.name %></option>
+                                <% end %>							
+							</select>
+						</div>	
+						
+						
+						<div class="form-group">
+							<label for="status" class="control-label">Status</label>							
+							<select class="form-control" id="status" name="status">
+								<option value="">Select</option>							
+								<option value="Available">Available</option>
+								<option value="Unavailable">Unavailable</option>								
+							</select>							
+						</div>				
+						
+										
+					</div>
+					<div class="modal-footer">
+						<input type="hidden" name="bookid" id="bookid" />					
+						<input type="hidden" name="action" id="action" value="" />
+						<input type="submit" name="save" id="save" class="btn btn-info" value="Save" />
+						<button type="button" class="btn btn-default" data-dismiss="modal" id="closeModal">Close</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>	
+  </body>
+</html>
+<script>
+	$(document).ready(function () {
+    $("#addBook").click(function () {
+        $("#bookModal").modal("show");
+    });
+});
+	$(document).ready(function () {
+    $("#closeModal").click(function () {
+        $("#bookModal").modal("hide");
+    });
+});
+</script>

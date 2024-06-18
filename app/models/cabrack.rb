@@ -1,0 +1,2 @@
+class Cabrack < ApplicationRecord
+end

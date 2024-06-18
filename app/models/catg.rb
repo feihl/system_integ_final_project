@@ -1,0 +1,2 @@
+class Catg < ApplicationRecord
+end

@@ -1,0 +1,117 @@
+    <div class="row row-offcanvas row-offcanvas-left">   
+		        <div class="col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
+<ul class="nav flex-column pl-1 leftMenus">			
+<li class="nav-item"><a class="nav-link" href="/dashboard"><strong><h1>Dashboard</h1></strong></a></li>
+<li class="nav-item">
+	<ul class="list-unstyled flex-column pl-3 collapse show" id="submenu1" aria-expanded="false">
+		<li class="nav-item"><a class="nav-link" href="/book"><strong>Manage Books</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/category"><strong>Category</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/author"><strong>Author</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/publisher"><strong>Publisher</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/rack"><strong>Rack</strong></a></li>	
+	</ul>
+</li>
+<li class="nav-item"><a class="nav-link" href="/issues"><strong>Issue Books</strong></a></li>
+<li class="nav-item"><a class="nav-link" href="/users"><strong>Student List</strong></a></li>
+<li class="nav-item"><a class="nav-link" href="/admin"><strong>Admin</strong></a></li>
+<li class="nav-item"><a class="nav-link" href=""><strong>Logout</strong></a></li>
+</ul>
+</div>
+      <div class="col-md-9 col-lg-10 main"> 
+		<h3>User Listing</h3>
+			<br>
+			<div class="float-right mb-2 col-md-2">
+				<button type="button" id="addUser" class="btn btn-info" title="Add book"><span class="glyphicon glyphicon-plus">Add Users</span></button>
+			</div>
+			<br><br>
+			<table class="table table-striped">
+			<thead>
+			  <tr>
+				<th>Name</th>
+				<th>Email</th>			
+				<th>Role</th>
+				<th>Actions</th>
+				<th></th>
+				<th></th>
+			  </tr>
+			</thead>
+			<tbody>
+			  <% @suazo.each do |user| %>
+			  <tr>
+                    <td>
+                        <%= "#{user.first_name} #{user.middle_name} #{user.last_name}" %>
+                    </td>
+				<td><%= user.email %></td>
+				<td><%= user.role %></td>
+				<td><a href="users/<%= user.id %>/edit" class="btn btn-primary">Edit</a></td>
+				<td><a href="users/<%= user.id %>/destroy" class="btn btn-danger">Delete</a></td>
+			  </tr> 
+				<% end %> 	  
+			</tbody>
+		  </table>	        
+        <hr>         
+       </div>       
+      </div>     
+    </div>
+	<div id="userModal" class="modal fade">
+		<div class="modal-dialog">
+			<form method="post" id="userForm" action="/users/create	">
+				<div class="modal-content">
+					<div class="modal-header">						
+						<h4 class="modal-title"><i class="fa fa-plus"></i> Edit User</h4>
+					</div>
+					<div class="modal-body">						
+						
+						<div class="form-group">
+							<label for="country" class="control-label">Role</label>							
+							<select class="form-control" id="role" name="role">
+								<option value="">Select Role</option>							
+								<option value="Student">Student</option>
+								<option value="Instructor">Instructor</option>								
+							</select>							
+						</div>
+						<div class="form-group">							
+							<label for="first name" class="control-label">First Name</label>							
+							<input type="text" name="fname" id="fname" autocomplete="off" class="form-control" placeholder="first name"/>				
+						</div>
+						<div class="form-group">
+							<label for="last name" class="control-label">Middle name</label>
+							<input type="text" class="form-control" id="mname" name="mname" placeholder="Middle name" >			
+						</div>
+						<div class="form-group">
+							<label for="last name" class="control-label">Last Name</label>
+							<input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" >			
+						</div>	
+
+						<div class="form-group">
+							<label for="email" class="control-label">Email</label>
+							<input type="email" class="form-control" id="email" name="email" placeholder="Email" >			
+						</div>
+						
+						<div class="form-group">
+							<label for="new password" class="control-label">New Password</label>
+							<input type="password" class="form-control" id="password" name="password" placeholder="password" >			
+						</div>
+										
+					</div>
+					<div class="modal-footer">
+						<input type="hidden" name="userid" id="userid" />						
+						<input type="hidden" name="action" id="action" value="" />
+						<input type="submit" name="save" id="save" class="btn btn-info" value="Save" />
+						<button type="button" class="btn btn-default" data-dismiss="modal" id="closeModal">Close</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+        <script>
+$(document).ready(function () {
+    $("#addUser").click(function () {
+        $("#userModal").modal("show");
+    });
+
+    $("#closeModal").click(function () {
+        $("#userModal").modal("hide");
+    });
+});
+</script>

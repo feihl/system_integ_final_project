@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bookid: 1
+  categoryid: 1
+  authorid: 1
+  rackid: 1
+  name: MyString
+  picture: MyString
+  publisherid: 1
+  isbn: 1
+  no_of_copy: 1
+  status: MyString
+  added_on: 2023-11-24 21:51:24
+  updated_on: 2023-11-24 21:51:24
+
+two:
+  bookid: 1
+  categoryid: 1
+  authorid: 1
+  rackid: 1
+  name: MyString
+  picture: MyString
+  publisherid: 1
+  isbn: 1
+  no_of_copy: 1
+  status: MyString
+  added_on: 2023-11-24 21:51:24
+  updated_on: 2023-11-24 21:51:24

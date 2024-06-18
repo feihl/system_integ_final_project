@@ -1,0 +1,95 @@
+    <div class="row row-offcanvas row-offcanvas-left">   
+		        <div class="col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
+<ul class="nav flex-column pl-1 leftMenus">			
+<li class="nav-item"><a class="nav-link" href="/dashboard"><strong><h1>Dashboard</h1></strong></a></li>
+<li class="nav-item">
+	<ul class="list-unstyled flex-column pl-3 collapse show" id="submenu1" aria-expanded="false">
+		<li class="nav-item"><a class="nav-link" href="/book"><strong>Manage Books</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/category"><strong>Category</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/author"><strong>Author</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/publisher"><strong>Publisher</strong></a></li>
+		<li class="nav-item"><a class="nav-link" href="/rack"><strong>Rack</strong></a></li>	
+	</ul>
+</li>
+<li class="nav-item"><a class="nav-link" href=""><strong>Issue Books</strong></a></li>
+<li class="nav-item"><a class="nav-link" href="/users"><strong>Student List</strong></a></li>
+<li class="nav-item"><a class="nav-link" href="/admin"><strong>Admin</strong></a></li>
+<li class="nav-item"><a class="nav-link" href=""><strong>Logout</strong></a></li>
+</ul>
+</div>
+     <div class="col-md-9 col-lg-10 main"> 
+		<h3>Manage Book</h3>
+		<br>
+        <form method="post" id="categoryForm" action="/book/<%= @books.id %>/update">
+            <div class="modal-content">                
+                <div class="modal-body">						
+                    <div class="form-group">						
+                        <label for="book" class="control-label">Book</label>							
+                        <input type="text" name="name" id="name" autocomplete="off" class="form-control" placeholder="Book Name" value="<%= @books.name %>"/>                                       
+                    </div>
+
+                    <div class="form-group">							
+                        <label for="isbn" class="control-label">ISBN No</label>							
+                        <input type="text" name="isbn" id="isbn" autocomplete="off" class="form-control" placeholder="ISBN No" value="<%= @books.isbn %>"/>                                        
+                    </div>
+
+                    <div class="form-group">							
+                        <label for="no_of_copy" class="control-label">No of Copy</label>			
+                        <input type="number" name="no_of_copy" id="no_of_copy" autocomplete="off" class="form-control" placeholder="No of Copy" value="<%= @books.no_of_copy %>"/>
+                    </div>
+                    
+                    <div class="form-group">							
+                        <label for="author" class="control-label">Author</label>
+                        <select name="author" id="author" class="form-control">
+                            <option value="">Select</option>
+                            <% @authors.each do |author| %>
+                                <option value="<%= author.id %>" <%= 'selected="selected"' if author.id == @books.authorid %>><%= author.name %></option>
+                            <% end %>							
+                        </select>
+                    </div>
+
+                    <div class="form-group">							
+                        <label for="publisher" class="control-label">Publisher</label>
+                        <select name="publisher" id="publisher" class="form-control">
+                            <option value="">Select</option>
+                            <% @publishers.each do |publisher| %>
+                                <option value="<%= publisher.id %>" <%= 'selected="selected"' if publisher.id == @books.publisherid %>><%= publisher.name %></option>
+                            <% end %>							
+                        </select>
+                    </div>
+
+                    <div class="form-group">							
+                        <label for="category" class="control-label">Category</label>
+                        <select name="category" id="category" class="form-control">
+                            <option value="">Select</option>
+                            <% @categories.each do |category| %>
+                                <option value="<%= category.id %>" <%= 'selected="selected"' if category.id == @books.categoryid %>><%= category.name %></option>
+                            <% end %>							
+                        </select>
+                    </div>								
+
+                    <div class="form-group">							
+                        <label for="rack" class="control-label">Rack</label>
+                        <select name="rack" id="rack" class="form-control">
+                            <option value="">Select</option>
+                            <% @racks.each do |rack| %>
+                                <option value="<%= rack.id %>" <%= 'selected="selected"' if rack.id == @books.rackid %>><%= rack.name %></option>
+                            <% end %>							
+                        </select>
+                    </div>
+                        <div class="form-group">
+                            <label for="status" class="control-label">Status</label>							
+                            <select class="form-control" id="status" name="status">
+                                <option value="Available" <%= 'selected="selected"' if @books.status == 'Available' %>>Available</option>
+                                <option value="Unavailable" <%= 'selected="selected"' if @books.status == 'Unavailable' %>>Unavailable</option>	
+                            </select>							
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id" id="id" value="<%= @books.id %>" />					
+                    <input type="hidden" name="action" id="action" value="/book/:id/update" />
+                    <input type="submit" name="save" id="save" class="btn btn-info" value="Save" />                    
+                </div>
+            </div>
+        </form>
+    </div>

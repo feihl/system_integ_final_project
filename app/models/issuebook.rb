@@ -1,0 +1,2 @@
+class Issuebook < ApplicationRecord
+end
